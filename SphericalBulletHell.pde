@@ -26,6 +26,8 @@ Mesh mesh = new Mesh(new Triangle[] {
 });
 Matrix4x4 matProj = new Matrix4x4();
 
+Vector3 cameraPos = Vector3.Zero();
+
 float zNear = 0.1f;
 float zFar = 1000.0f;
 float fov = 90.0f;
@@ -74,30 +76,50 @@ void draw()
         triTrans.Points[0].Y += cos(theta);
         triTrans.Points[1].Y += cos(theta);
         triTrans.Points[2].Y += cos(theta);
-        triTrans.Points[0].X += cos(theta);
-        triTrans.Points[1].X += cos(theta);
-        triTrans.Points[2].X += cos(theta);
+        triTrans.Points[0].X += cos(theta) * 1.2f;
+        triTrans.Points[1].X += cos(theta) * 1.2f;
+        triTrans.Points[2].X += cos(theta) * 1.2f;
 
-        triProj.Points[0] = matProj.MultiplyVector(triTrans.Points[0]);
-        triProj.Points[1] = matProj.MultiplyVector(triTrans.Points[1]);
-        triProj.Points[2] = matProj.MultiplyVector(triTrans.Points[2]);
+        // Calculate Normals
+        Vector3 lineA = Vector3.Zero();
+        Vector3 lineB = Vector3.Zero();
 
-        // Scale into view
-        triProj.Points[0].X += 1.0f;
-        triProj.Points[0].Y += 1.0f;
-        triProj.Points[1].X += 1.0f;
-        triProj.Points[1].Y += 1.0f;
-        triProj.Points[2].X += 1.0f;
-        triProj.Points[2].Y += 1.0f;
+        lineA.X = triTrans.Points[1].X - triTrans.Points[0].X;
+        lineA.Y = triTrans.Points[1].Y - triTrans.Points[0].Y;
+        lineA.Z = triTrans.Points[1].Z - triTrans.Points[0].Z;
+        
+        lineB.X = triTrans.Points[2].X - triTrans.Points[0].X;
+        lineB.Y = triTrans.Points[2].Y - triTrans.Points[0].Y;
+        lineB.Z = triTrans.Points[2].Z - triTrans.Points[0].Z;
 
-        triProj.Points[0].X *= 0.5f * (float)width;
-        triProj.Points[0].Y *= 0.5f * (float)height;
-        triProj.Points[1].X *= 0.5f * (float)width;
-        triProj.Points[1].Y *= 0.5f * (float)height;
-        triProj.Points[2].X *= 0.5f * (float)width;
-        triProj.Points[2].Y *= 0.5f * (float)height;
+        Vector3 normal = lineA.Cross(lineB);
 
-        triangle(triProj.Points[0].X, triProj.Points[0].Y, triProj.Points[1].X, triProj.Points[1].Y, triProj.Points[2].X, triProj.Points[2].Y);
+        normal.Normalize();
+
+        if (normal.Dot(triTrans.Points[0].Minus(cameraPos)) < 0.0f)
+        {
+            // Project 3D => 2D
+            triProj.Points[0] = matProj.MultiplyVector(triTrans.Points[0]);
+            triProj.Points[1] = matProj.MultiplyVector(triTrans.Points[1]);
+            triProj.Points[2] = matProj.MultiplyVector(triTrans.Points[2]);
+
+            // Scale into view
+            triProj.Points[0].X += 1.0f;
+            triProj.Points[0].Y += 1.0f;
+            triProj.Points[1].X += 1.0f;
+            triProj.Points[1].Y += 1.0f;
+            triProj.Points[2].X += 1.0f;
+            triProj.Points[2].Y += 1.0f;
+
+            triProj.Points[0].X *= 0.5f * (float)width;
+            triProj.Points[0].Y *= 0.5f * (float)height;
+            triProj.Points[1].X *= 0.5f * (float)width;
+            triProj.Points[1].Y *= 0.5f * (float)height;
+            triProj.Points[2].X *= 0.5f * (float)width;
+            triProj.Points[2].Y *= 0.5f * (float)height;
+
+            triangle(triProj.Points[0].X, triProj.Points[0].Y, triProj.Points[1].X, triProj.Points[1].Y, triProj.Points[2].X, triProj.Points[2].Y);
+        }
     }
 
     pFrameTime = currentTime;

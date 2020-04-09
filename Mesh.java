@@ -29,6 +29,10 @@ public class Mesh
             while (reader.hasNextLine())
             {
                 String line = reader.nextLine();
+
+                // Remove excess whitespace
+                line = line.trim().replaceAll(" +", " ");
+
                 String[] parts = line.split(" ");
 
                 if (parts[0] == "v") // Vertex
