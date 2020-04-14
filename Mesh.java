@@ -1,6 +1,8 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.FileNotFoundException;
 
 public class Mesh
 {
@@ -20,7 +22,8 @@ public class Mesh
     {
         try
         {
-            File f = new File(file);
+            Path relative = Paths.get(file);
+            File f = new File(relative.toAbsolutePath().toString());
             Scanner reader = new Scanner(f);
 
             List<Vector3> verts = new ArrayList<Vector3>();
@@ -31,18 +34,19 @@ public class Mesh
                 String line = reader.nextLine();
 
                 // Remove excess whitespace
-                line = line.trim().replaceAll(" +", " ");
+                line = line.trim().replaceAll("\t", "").replaceAll(" +", " ");
 
                 String[] parts = line.split(" ");
 
-                if (parts[0] == "v") // Vertex
+                if (parts[0].endsWith("v")) // Vertex
                 {
                     Vector3 vec = new Vector3(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]), Float.parseFloat(parts[3]));
                     verts.add(vec);
                 }
-                else if (parts[0] == "f") // Face
-                {
-                    int[] face = { Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]) };
+                else if (parts[0].endsWith("f")) // Face
+                {  
+                    // We only need the face itself -- not the texture or normals
+                    int[] face = { Integer.parseInt(parts[1].split("/")[0]), Integer.parseInt(parts[2].split("/")[0]), Integer.parseInt(parts[3].split("/")[0]) };
                     mesh.Tris.add(new Triangle(verts.get(face[0] - 1), verts.get(face[1] - 1), verts.get(face[2] - 1)));
                 }
             }

@@ -1,4 +1,4 @@
-Mesh mesh = new Mesh(new Triangle[] {
+/*Mesh mesh = new Mesh(new Triangle[] {
     // SOUTH
     new Triangle(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f)),
     new Triangle(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f)),
@@ -23,15 +23,18 @@ Mesh mesh = new Mesh(new Triangle[] {
     new Triangle(new Vector3(1.0f, 0.0f, 1.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector3(0.0f, 0.0f, 0.0f)),
     new Triangle(new Vector3(1.0f, 0.0f, 1.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f))
 
-});
+});*/
+Mesh mesh = Mesh.LoadFromFile("C:\\Users\\iggyg\\OneDrive\\Documents\\Processing\\SphericalBulletHell\\sphere.obj");
 Matrix4x4 matProj = new Matrix4x4();
 
 Vector3 cameraPos = Vector3.Zero();
+Vector3 lightPos = new Vector3(0, 1, -1);
 
 float zNear = 0.1f;
 float zFar = 1000.0f;
 float fov = 90.0f;
 
+// For testing
 float theta = 0.0f;
 
 long pFrameTime = 0;
@@ -49,13 +52,15 @@ void setup()
     matProj.M[3][2] = (-zFar * zNear) / (zFar - zNear);
     matProj.M[2][3] = 1.0f;
     matProj.M[3][3] = 0.0f;
+
+    lightPos.Normalize();
 }
 
 void draw()
 {
     background(0);
-    fill(0, 0, 0, 0);
-    stroke(255, 255, 255, 255);
+    //fill(0, 0, 0, 0);
+    //stroke(255, 255, 255, 255);
 
     long currentTime = millis();
     long deltaTime = currentTime - pFrameTime;
@@ -70,6 +75,7 @@ void draw()
 
         Triangle triTrans = tri;
 
+        // Stuff for testing 
         triTrans.Points[0].Z += sin(theta) + 3;
         triTrans.Points[1].Z += sin(theta) + 3;
         triTrans.Points[2].Z += sin(theta) + 3;
@@ -96,8 +102,15 @@ void draw()
 
         normal.Normalize();
 
-        if (normal.Dot(triTrans.Points[0].Minus(cameraPos)) < 0.0f)
+        if (normal.Dot(triTrans.Points[0].Subtract(cameraPos)) < 0.0f)
         {
+            // Lighting
+            float lightDot = normal.Dot(lightPos);
+            int col = (int)(lightDot * 255.0f);
+
+            stroke(col, col, col, 255);
+            fill(col, col, col, 255);
+
             // Project 3D => 2D
             triProj.Points[0] = matProj.MultiplyVector(triTrans.Points[0]);
             triProj.Points[1] = matProj.MultiplyVector(triTrans.Points[1]);

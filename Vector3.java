@@ -35,14 +35,34 @@ public class Vector3
         return new Vector3(Y * v.Z - Z * v.Y, Z * v.X - X * v.Z, X * v.Y - Y * v.X);
     }
 
-    public Vector3 Minus(Vector3 v)
+    public float Dot(Vector3 v)
+    {
+        return X * v.X + Y * v.Y + Z * v.Z;
+    }
+
+    public Vector3 Add(Vector3 v)
+    {
+        return new Vector3(X + v.X, Y + v.Y, Z + v.Z);
+    }
+
+    public Vector3 Subtract(Vector3 v)
     {
         return new Vector3(X - v.X, Y - v.Y, Z - v.Z);
     }
 
-    public float Dot(Vector3 v)
+    public Vector3 Multiply(Vector3 v)
     {
-        return X * v.X + Y * v.Y + Z * v.Z;
+        return new Vector3(X * v.X, Y * v.Y, Z * v.Z);
+    }
+
+    public Vector3 Divide(Vector3 v)
+    {
+        return new Vector3(X / v.X, Y / v.Y, Z / v.Y);
+    }
+
+    public boolean Equals(Vector3 v)
+    {
+        return X == v.X && Y == v.Y && Z == v.Z;
     }
 
     public static Vector3 Zero()
