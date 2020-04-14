@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class Matrix4x4
 {
 
@@ -138,5 +140,15 @@ public class Matrix4x4
         mat.M[3][3] = 0.0f;
 
         return mat;
+    }
+
+    public static float Deg2Rad(float degrees)
+    {
+        return degrees * (float)Math.PI / 180.0f;
+    }
+
+    public static float Rad2Deg(float radians)
+    {
+        return radians * 180.0f / (float)Math.PI;
     }
 }

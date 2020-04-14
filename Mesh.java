@@ -8,6 +8,7 @@ public class Mesh
 {
 
     public List<Triangle> Tris = new ArrayList<Triangle>();
+    public Matrix4x4 Transformation = Matrix4x4.Identity();
 
     public Mesh() {}
 
@@ -22,8 +23,7 @@ public class Mesh
     {
         try
         {
-            Path relative = Paths.get(file);
-            File f = new File(relative.toAbsolutePath().toString());
+            File f = new File(file);
             Scanner reader = new Scanner(f);
 
             List<Vector3> verts = new ArrayList<Vector3>();
