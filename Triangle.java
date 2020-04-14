@@ -2,6 +2,7 @@ public class Triangle
 {
 
     public Vector3 Points[];
+    public int Luminance = 0;
 
     public Triangle()
     {

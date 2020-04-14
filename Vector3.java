@@ -23,11 +23,16 @@ public class Vector3
 
     public void Normalize()
     {
-        float l = (float)Math.sqrt(X * X + Y * Y + Z * Z);
+        float l = Magnitude();
 
         X /= l;
         Y /= l;
         Z /= l;
+    }
+
+    public float Magnitude()
+    {
+        return (float)Math.sqrt(X * X + Y * Y + Z * Z);
     }
 
     public Vector3 Cross(Vector3 v)
