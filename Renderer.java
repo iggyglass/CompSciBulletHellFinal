@@ -13,6 +13,7 @@ public class Renderer
 
 	private Matrix4x4 matProj;
 
+	// Initalizes a new renderer given parameters
 	public Renderer(int width, int height, float zNear, float zFar, float fov, Vector3 lightPosition, Vector3 cameraPosition)
 	{
 		Width = width;
@@ -91,6 +92,7 @@ public class Renderer
 		return triRaster;
 	}
 
+	// Updates the projection matrix for if something (e.g. light position) has changed
 	public void UpdateProjection()
 	{
 		matProj = Matrix4x4.Projection(Width, Height, Fov, ZNear, ZFar);

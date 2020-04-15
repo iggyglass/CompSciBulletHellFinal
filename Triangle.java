@@ -4,6 +4,7 @@ public class Triangle
     public Vector3 Points[];
     public int Luminance = 0;
 
+	// Creates a new triangle
     public Triangle()
     {
         Points = new Vector3[3];
@@ -13,6 +14,7 @@ public class Triangle
         Points[2] = Vector3.Zero();
     }
 
+	// Deep clones given triangle
     public Triangle(Triangle other)
     {
         Points = new Vector3[3];
@@ -22,6 +24,7 @@ public class Triangle
         Points[2] = new Vector3(other.Points[2]);
     }
 
+	// Creates a new triangle with given points
     public Triangle(Vector3 a, Vector3 b, Vector3 c)
     {
         Points = new Vector3[3];
@@ -31,6 +34,7 @@ public class Triangle
         Points[2] = c;
     }
 
+	// Calculates the normal of this triangle
     public Vector3 CalculateNormal()
     {
         Vector3 lineA = Vector3.Zero();

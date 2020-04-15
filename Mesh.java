@@ -1,7 +1,5 @@
 import java.util.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.io.FileNotFoundException;
 
 public class Mesh
@@ -12,6 +10,7 @@ public class Mesh
 
 	public Mesh() {}
 
+	// Creates a new mesh with Triangles tris
 	public Mesh(Triangle[] tris)
 	{
 		Tris = Arrays.asList(tris);

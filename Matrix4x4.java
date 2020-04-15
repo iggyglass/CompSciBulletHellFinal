@@ -6,6 +6,7 @@ public class Matrix4x4
     // Row, Col
     public float[][] M;
 
+	// Creates a new Matrix4x4 with values of 0
     public Matrix4x4()
     {
         M = new float[][]
@@ -17,6 +18,7 @@ public class Matrix4x4
         };
     }
 
+	// Returns the result of multiplying vector v by this matrix
     public Vector3 MultiplyVector(Vector3 v)
     {
         Vector3 out = Vector3.Zero();
@@ -37,6 +39,7 @@ public class Matrix4x4
         return out;
     }
 
+	// Returns the result of multiplying matrix m by this matrix
     public Matrix4x4 MultiplyMatrix(Matrix4x4 m)
     {
         Matrix4x4 mat = new Matrix4x4();
@@ -126,6 +129,7 @@ public class Matrix4x4
         return mat;
     }
 
+	// Creates a projection matrix given parameters
     public static Matrix4x4 Projection(float width, float height, float fov, float zNear, float zFar)
     {
         Matrix4x4 mat = new Matrix4x4();
@@ -142,11 +146,13 @@ public class Matrix4x4
         return mat;
     }
 
+	// Converts Degrees to Radians
     public static float Deg2Rad(float degrees)
     {
         return degrees * (float)Math.PI / 180.0f;
     }
 
+	// Converts Radians to Degrees
     public static float Rad2Deg(float radians)
     {
         return radians * 180.0f / (float)Math.PI;
