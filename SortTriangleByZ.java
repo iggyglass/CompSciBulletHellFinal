@@ -13,7 +13,7 @@ public class SortTriangleByZ implements Comparator<Triangle>
     private int sign(float f)
     {
         if (f < 0) return -1;
-        else if (f == 0) return 0;
-        else return 1;
+        else if (f > 0) return 1;
+        else return 0;
     }
 }
