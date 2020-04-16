@@ -38,18 +38,11 @@ void draw()
 
 	mesh.Transformation = Matrix4x4.RotationX(Matrix4x4.Deg2Rad(theta)).MultiplyMatrix(Matrix4x4.Translation(new Vector3(0, 0, 5)));
 
-	List<Triangle> triRaster = rend.RenderMeshes(new Mesh[] { mesh });
+	// Render Meshes
+	rend.RenderMeshes(new Mesh[] { mesh });
 
-	// Render triangles
-	for (int j = 0; j < triRaster.size(); j++)
-	{
-		Triangle current = triRaster.get(j);
-
-		stroke(current.Luminance, current.Luminance, current.Luminance, 255);
-		fill(current.Luminance, current.Luminance, current.Luminance, 255);
-
-		triangle(current.Points[0].X, current.Points[0].Y, current.Points[1].X, current.Points[1].Y, current.Points[2].X, current.Points[2].Y);
-	}
+	// Blit to Screen
+	image(new PImage(rend.Screen), 0, 0);
 
 	pFrameTime = currentTime;
 }
