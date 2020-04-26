@@ -26,12 +26,16 @@ float y;
 float xRange = 5;
 float yRange = 5;
 
-GameState state;
+GameState state = GameState.Starting;
 
 boolean upHeld = false;
 boolean downHeld = false;
 boolean rightHeld = false;
 boolean leftHeld = false;
+
+int score;
+int startFrame;
+int scoreRate = 10;
 
 enum GameState
 {
@@ -50,7 +54,7 @@ void setup()
 	x = 0;
 	y = 0;
 
-	state = GameState.Starting;
+	score = 0;
 
 	mesh.Transformation = Matrix4x4.Translation(new Vector3(x, y, 5));
 
@@ -83,6 +87,7 @@ void draw()
 		textAlign(CENTER, CENTER);
 		textSize(64);
 		text("You are dead", width / 2, height / 2);
+		text("Score: " + Integer.toString(score), width / 2, height / 2 + 100);
 
 		return;
 	}
@@ -119,6 +124,15 @@ void draw()
 	{
 		if (go[i].IsColliding(go[0])) state = GameState.Dead;
 	}
+
+	// Update score
+	score = (frameCount - startFrame) / scoreRate;
+
+	// Draw Score
+	fill(255, 255, 255);
+	textSize(64);
+	textAlign(LEFT, TOP);
+	text(Integer.toString(score), 0, 0);
 
 	pFrameTime = currentTime;
 }
@@ -181,8 +195,17 @@ void handleInput(int k, boolean down)
 			rightHeld = down;
 			break;
 		case 32: // Spacebar
-			if (state == GameState.Starting) state = GameState.InGame;
-			else if (state == GameState.Dead) frameCount = -1;
+			if (state == GameState.Starting)
+			{
+				startFrame = frameCount;
+				state = GameState.InGame;
+			}
+			else if (state == GameState.Dead)
+			{
+				state = GameState.InGame;
+				startFrame = 0;
+				frameCount = -1;
+			}
 
 			break;
 		default:
