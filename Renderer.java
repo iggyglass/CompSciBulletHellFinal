@@ -99,6 +99,21 @@ public class Renderer
 		return triRaster;
 	}
 
+	public Vector3 WorldToScreen(Vector3 input)
+	{
+		// 3D => 2D
+		input = matProj.MultiplyVector(input);
+
+		// Scale into view
+		input.X += 1.0f;
+		input.Y += 1.0f;
+
+		input.X *= 0.5f * (float)Width;
+		input.Y *= 0.5f * (float)Height;
+
+		return input;
+	}
+
 	// Updates the projection matrix for if something (e.g. light position) has changed
 	public void UpdateProjection()
 	{

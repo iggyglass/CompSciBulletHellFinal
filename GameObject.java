@@ -18,7 +18,11 @@ public class GameObject
         Radius = radius;
     }
 
-    public void Move(float f) {}
+    public void Move(float f)
+    {
+        // If nothing else, apply position to transformation matrix
+        Mesh.Transformation = Matrix4x4.Translation(Position);
+    }
 
     public boolean IsColliding(GameObject other)
     {

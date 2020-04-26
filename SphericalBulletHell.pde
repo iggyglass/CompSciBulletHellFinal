@@ -5,7 +5,7 @@ import java.util.*;
 //     why input isnt working
 
 Mesh mesh;
-GameObject[] go = new GameObject[2];
+GameObject[] go = new GameObject[6];
 
 Renderer rend;
 
@@ -16,13 +16,29 @@ float zNear = 0.1f;
 float zFar = 1000.0f;
 float fov = 90.0f;
 
+float objRadius = 1.1f;
+
 long pFrameTime = 0;
 
-float x = 0;
-float y = 0;
+float x;
+float y;
 
 float xRange = 5;
 float yRange = 5;
+
+GameState state;
+
+boolean upHeld = false;
+boolean downHeld = false;
+boolean rightHeld = false;
+boolean leftHeld = false;
+
+enum GameState
+{
+	Starting,
+	InGame,
+	Dead
+}
 
 void setup()
 {
@@ -31,10 +47,19 @@ void setup()
 	mesh = Mesh.LoadFromFile(sketchPath("sphere.obj"));
 	rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
 
-	mesh.Transformation = Matrix4x4.Translation(new Vector3(0, 0, 5));
+	x = 0;
+	y = 0;
 
-	go[0] = new GameObject(mesh, new Vector3(0, 0, 5), 1.5f);
-	go[1] = new Asteroid(xRange, yRange, 5, 100, 1, 1.5f, mesh);
+	state = GameState.Starting;
+
+	mesh.Transformation = Matrix4x4.Translation(new Vector3(x, y, 5));
+
+	go[0] = new GameObject(mesh, new Vector3(x, y, 5), objRadius);
+	go[1] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	go[2] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	go[3] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	go[4] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	go[5] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
 
 	lightPos.Normalize();
 }
@@ -43,11 +68,38 @@ void draw()
 {
 	background(0);
 
+	if (state == GameState.Starting)
+	{
+		fill(255, 255, 255);
+		textAlign(CENTER, CENTER);
+		textSize(64);
+		text("Press Space to start", width / 2, height / 2);
+
+		return;
+	}
+	else if (state == GameState.Dead)
+	{
+		fill(255, 255, 255);
+		textAlign(CENTER, CENTER);
+		textSize(64);
+		text("You are dead", width / 2, height / 2);
+
+		return;
+	}
+
 	long currentTime = millis();
 	long deltaTime = currentTime - pFrameTime;
 
-	go[0].Mesh.Transformation = Matrix4x4.Translation(new Vector3(x, y, 5));
-	go[1].Move(0.1f);
+	move();
+
+	go[0].Position = new Vector3(x, y, 5);
+
+	go[0].Move(0.5f);
+	go[1].Move(0.5f);
+	go[2].Move(0.5f);
+	go[3].Move(0.5f);
+	go[4].Move(0.5f);
+	go[5].Move(0.5f);
 
 	List<Triangle> triRaster = rend.RenderMeshes(go);
 
@@ -62,26 +114,91 @@ void draw()
 		triangle(current.Points[0].X, current.Points[0].Y, current.Points[1].X, current.Points[1].Y, current.Points[2].X, current.Points[2].Y);
 	}
 
+	// Check collisions
+	for (int i = 1; i < go.length; i++)
+	{
+		if (go[i].IsColliding(go[0])) state = GameState.Dead;
+	}
+
 	pFrameTime = currentTime;
 }
 
 void keyPressed()
 {
-	if (keyCode == LEFT && x > -xRange)
-	{
-		x -= 0.2f;
-	}
-	else if (keyCode == RIGHT && x < xRange)
-	{
-		x += 0.2f;
-	}	
+	handleInput(keyCode, true);
+}
 
-	if (keyCode == UP && y > -yRange)
+void keyReleased()
+{
+	handleInput(keyCode, false);
+}
+
+void move()
+{
+	if (leftHeld ^ rightHeld)
 	{
-		y -= 0.2f;
+		if (leftHeld && x > -xRange)
+		{
+			x -= 0.2f;
+		}
+		else if (rightHeld && x < xRange)
+		{
+			x += 0.2f;
+		}
 	}
-	else if (keyCode == DOWN && y < yRange)
+
+	if (upHeld ^ downHeld)
 	{
-		y += 0.2f;
+		if (upHeld && y > -yRange)
+		{
+			y -= 0.2f;
+		}
+		else if (downHeld && y < yRange)
+		{
+			y += 0.2f;
+		}
 	}
+}
+
+void handleInput(int k, boolean down)
+{
+	switch (k)
+	{
+		case UP:
+			upHeld = down;
+			break;
+		case DOWN:
+			downHeld = down;
+			break;
+		case LEFT:
+			leftHeld = down;
+			break;
+		case RIGHT:
+			rightHeld = down;
+			break;
+		case 32: // Spacebar
+			if (state == GameState.Starting) state = GameState.InGame;
+			else if (state == GameState.Dead) frameCount = -1;
+
+			break;
+		default:
+			return;
+	}
+}
+
+// Helps for debugging collisions -- renders colliders
+void drawDebug(GameObject obj)
+{
+	fill(255, 0, 0);
+	stroke(255, 0, 0);
+
+	Vector3 p = rend.WorldToScreen(obj.Position);
+	Vector3 q = rend.WorldToScreen(obj.Position.Add(new Vector3(obj.Radius, 0, 0)));
+
+	circle(p.X, p.Y, 10);
+
+	fill(0, 255, 0, 128);
+	stroke(0, 255, 0, 128);
+
+	circle(p.X, p.Y, p.X - q.X);
 }
