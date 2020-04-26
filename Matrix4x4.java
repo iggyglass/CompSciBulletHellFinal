@@ -18,6 +18,7 @@ public class Matrix4x4
         };
     }
 
+    // Creates a clone of Matrix4x4 m
     public Matrix4x4(Matrix4x4 m)
     {
         for (int i = 0; i < 4; i++)
@@ -29,6 +30,7 @@ public class Matrix4x4
         }
     }
 
+    // Tests if this Matrix is equal to other matrix
     public boolean Equals(Matrix4x4 other)
     {
         for (int i = 0; i < 4; i++)

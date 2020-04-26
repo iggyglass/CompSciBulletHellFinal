@@ -123,16 +123,19 @@ void draw()
 	pFrameTime = currentTime;
 }
 
+// Handles key pressage
 void keyPressed()
 {
 	handleInput(keyCode, true);
 }
 
+// Handles key releasage
 void keyReleased()
 {
 	handleInput(keyCode, false);
 }
 
+// Moves player based off of current input
 void move()
 {
 	if (leftHeld ^ rightHeld)
@@ -160,6 +163,7 @@ void move()
 	}
 }
 
+// Handles an input interrupt
 void handleInput(int k, boolean down)
 {
 	switch (k)

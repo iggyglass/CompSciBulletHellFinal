@@ -55,6 +55,7 @@ public class Triangle
         return normal;  
     }
 
+    // Returns the center point of this triangle
     public Vector3 GetCenter()
     {
         float x = (Points[0].X + Points[1].X + Points[2].X) / 3.0f;

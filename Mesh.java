@@ -8,6 +8,7 @@ public class Mesh
 	public List<Triangle> Tris = new ArrayList<Triangle>();
 	public Matrix4x4 Transformation = Matrix4x4.Identity();
 
+	// Creates an empty mesh
 	public Mesh() {}
 
 	// Creates a new mesh with Triangles tris
@@ -25,6 +26,7 @@ public class Mesh
 		}
 	}
 
+	// Tests if this mesh is equal to other mesh
 	public boolean Equals(Mesh other)
 	{
 		return Tris.equals(other.Tris) && Transformation.Equals(other.Transformation);
@@ -68,15 +70,15 @@ public class Mesh
 			
 			return mesh;
 		}
-		catch (FileNotFoundException e)
+		catch (FileNotFoundException e) // Unable to locate file -- return null
 		{
 			return null;
 		}
-		catch (IndexOutOfBoundsException e)
+		catch (IndexOutOfBoundsException e) // Invalid file format -- return null
 		{
 			return null;
 		}
-		catch (NumberFormatException e)
+		catch (NumberFormatException e) // Invalid number format -- return null
 		{
 			return null;
 		}

@@ -99,6 +99,7 @@ public class Renderer
 		return triRaster;
 	}
 
+	// Transforms a set of world coordinates to screen coordinates
 	public Vector3 WorldToScreen(Vector3 input)
 	{
 		// 3D => 2D

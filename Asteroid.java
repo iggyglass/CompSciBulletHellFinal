@@ -11,6 +11,7 @@ public class Asteroid extends GameObject
     private int maxTickets;
     private float minZ;
 
+    // Creates a new asteroid with given parameters
     public Asteroid(float xRange, float yRange, float startZ, int maxTickets, float minZ, float radius, Mesh mesh)
     {
         super();
@@ -29,6 +30,7 @@ public class Asteroid extends GameObject
         Restart();
     }
 
+    // Resets this asteroid
     public void Restart()
     {
         float x = (float)(rand.nextInt(2 * Math.round(xRange)) - xRange);
@@ -41,6 +43,7 @@ public class Asteroid extends GameObject
         updatePosition();
     }
 
+    // Moves this asteroid (akin to update() in unity)
     @Override
     public void Move(float speed)
     {
@@ -56,6 +59,7 @@ public class Asteroid extends GameObject
         else updatePosition();
     }
 
+    // Updates the transformation to align with the actual position of asteroid
     private void updatePosition()
     {
         Mesh.Transformation = Matrix4x4.Translation(Position);
