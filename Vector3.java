@@ -39,6 +39,16 @@ public class Vector3
 		return (float)Math.sqrt(X * X + Y * Y + Z * Z);
 	}
 
+	// Returns the distance between this vector and input vector v
+	public float Distance(Vector3 v)
+	{
+		float dX = v.X - X;
+		float dY = v.Y - Y;
+		float dZ = v.Z - Z;
+
+		return (float)Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+	}
+
 	// Returns the cross product of this vector and input vector v
 	public Vector3 Cross(Vector3 v)
 	{

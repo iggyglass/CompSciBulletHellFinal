@@ -16,6 +16,20 @@ public class Mesh
 		Tris = Arrays.asList(tris);
 	}
 
+	// Clones Mesh m
+	public Mesh(Mesh m)
+	{
+		for (int i = 0; i < m.Tris.size(); i++)
+		{
+			Tris.add(new Triangle(m.Tris.get(i)));
+		}
+	}
+
+	public boolean Equals(Mesh other)
+	{
+		return Tris.equals(other.Tris) && Transformation.Equals(other.Transformation);
+	}
+
 	// Loads an object file (.obj) from path file then parses it
 	// into a mesh. Returns Mesh on success and null on failure.
 	public static Mesh LoadFromFile(String file)

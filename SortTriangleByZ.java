@@ -1,4 +1,3 @@
-import java.lang.Math;
 import java.util.Comparator;
 
 public class SortTriangleByZ implements Comparator<Triangle>
@@ -9,6 +8,9 @@ public class SortTriangleByZ implements Comparator<Triangle>
 		float first = (a.Points[0].Z + a.Points[1].Z + a.Points[2].Z) / 3.0f;
 		float second = (b.Points[0].Z + b.Points[1].Z + a.Points[2].Z) / 3.0f;
 
-		return Math.round(first - second);
+		if (first > second) return -1;
+		if (first < second) return 1;
+
+		return 0;
     }
 }

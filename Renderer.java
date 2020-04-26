@@ -28,14 +28,14 @@ public class Renderer
 	}
 
 	// Takes in list of Meshes and returns triangles to raster
-	public List<Triangle> RenderMeshes(Mesh[] meshes)
+	public List<Triangle> RenderMeshes(GameObject[] gameObjects)
 	{
 		List<Triangle> triRaster = new ArrayList<Triangle>();
 
 		// Loop through Meshes
-		for (int i = 0; i < meshes.length; i++)
+		for (int i = 0; i < gameObjects.length; i++)
 		{
-			Mesh mesh = meshes[i];
+			Mesh mesh = gameObjects[i].Mesh;
 
 			// Render Mesh
 			for (int j = 0; j < mesh.Tris.size(); j++)
@@ -61,10 +61,17 @@ public class Renderer
 
 					triProj.Luminance = col;
 
+					float w = triTrans.GetCenter().Z;
+
 					// Project 3D => 2D
 					triProj.Points[0] = matProj.MultiplyVector(triTrans.Points[0]);
 					triProj.Points[1] = matProj.MultiplyVector(triTrans.Points[1]);
 					triProj.Points[2] = matProj.MultiplyVector(triTrans.Points[2]);
+
+					// Add w component for depth-sorting 
+					triProj.Points[0].Z = w;
+					triProj.Points[1].Z = w;
+					triProj.Points[2].Z = w;
 
 					// Scale into view
 					triProj.Points[0].X += 1.0f;

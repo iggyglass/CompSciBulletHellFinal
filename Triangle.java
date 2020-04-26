@@ -54,4 +54,13 @@ public class Triangle
 
         return normal;  
     }
+
+    public Vector3 GetCenter()
+    {
+        float x = (Points[0].X + Points[1].X + Points[2].X) / 3.0f;
+        float y = (Points[0].Y + Points[1].Y + Points[2].Y) / 3.0f;
+        float z = (Points[0].Z + Points[1].Z + Points[2].Z) / 3.0f;
+
+        return new Vector3(x, y, z);
+    }
 }

@@ -18,6 +18,30 @@ public class Matrix4x4
         };
     }
 
+    public Matrix4x4(Matrix4x4 m)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                M[i][j] = Float.valueOf(m.M[i][j]);
+            }
+        }
+    }
+
+    public boolean Equals(Matrix4x4 other)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (M[i][j] != other.M[i][j]) return false;
+            }
+        }
+
+        return true;
+    }
+
 	// Returns the result of multiplying vector v by this matrix
     public Vector3 MultiplyVector(Vector3 v)
     {
@@ -125,6 +149,19 @@ public class Matrix4x4
         mat.M[3][0] = v.X;
         mat.M[3][1] = v.Y;
         mat.M[3][2] = v.Z;
+
+        return mat;
+    }
+
+    // Creates a scaling matrix
+    public static Matrix4x4 Scale(Vector3 v)
+    {
+        Matrix4x4 mat = new Matrix4x4();
+
+        mat.M[0][0] = v.X;
+        mat.M[1][1] = v.Y;
+        mat.M[2][2] = v.Z;
+        mat.M[3][3] = 1.0f;
 
         return mat;
     }
