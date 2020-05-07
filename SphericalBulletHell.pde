@@ -24,6 +24,9 @@ long pFrameTime = 0;
 float x;
 float y;
 
+float velocityX = 0.0f;
+float velocityY = 0.0f;
+
 float xRange = 5;
 float yRange = 5;
 
@@ -155,11 +158,11 @@ void move()
 	{
 		if (leftHeld && x > -xRange)
 		{
-			x -= 0.2f;
+			velocityX -= 0.05f;
 		}
 		else if (rightHeld && x < xRange)
 		{
-			x += 0.2f;
+			velocityX += 0.05f;
 		}
 	}
 
@@ -167,13 +170,31 @@ void move()
 	{
 		if (upHeld && y > -yRange)
 		{
-			y -= 0.2f;
+			velocityY -= 0.05f;
 		}
 		else if (downHeld && y < yRange)
 		{
-			y += 0.2f;
+			velocityY += 0.05f;
 		}
 	}
+
+	// Apply friction
+	velocityX += velocityX < -0.01f ? 0.025f : velocityX > 0.01f ? -0.025f : 0f;
+	velocityY += velocityY < -0.01f ? 0.025f : velocityY > 0.01f ? -0.025f : 0f;
+
+	// Clamp velocity
+	velocityX = clamp(velocityX, 0.2f);
+	velocityY = clamp(velocityY, 0.2f);
+
+	// Apply velocity
+	x += velocityX;
+	y += velocityY;
+}
+
+// Clamps value to be between -m and +m
+float clamp(float v, float m)
+{
+	return v < -m ? -m : v > m ? m : v;
 }
 
 // Handles an input interrupt
