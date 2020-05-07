@@ -196,4 +196,10 @@ public class Matrix4x4
     {
         return radians * 180.0f / (float)Math.PI;
     }
+
+    // Linearly interpolates between values a and b given t
+    public static float Lerp(float a, float b, float t)
+    {
+        return (a * (1.0f - t)) + (b * t);
+    }
 }

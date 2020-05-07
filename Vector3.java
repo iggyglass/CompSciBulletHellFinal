@@ -15,6 +15,14 @@ public class Vector3
 		Z = z;
 	}
 
+	// Creates a vector3 with all components set to float v
+	public Vector3(float v)
+	{
+		X = Float.valueOf(v);
+		Y = Float.valueOf(v);
+		Z = Float.valueOf(v);
+	}
+
 	// Clones the input vector3
 	public Vector3(Vector3 v)
 	{
@@ -89,6 +97,16 @@ public class Vector3
 	public boolean Equals(Vector3 v)
 	{
 		return X == v.X && Y == v.Y && Z == v.Z;
+	}
+
+	// Linearly interpolates between this vector3 and vector3 v given t
+	public Vector3 Lerp(Vector3 v, float t)
+	{
+		float x = Matrix4x4.Lerp(X, v.X, t);
+		float y = Matrix4x4.Lerp(Y, v.Y, t);
+		float z = Matrix4x4.Lerp(Z, v.Z, t);
+
+		return new Vector3(x, y, z);
 	}
 
 	// Returns a new vector with 0 in all components

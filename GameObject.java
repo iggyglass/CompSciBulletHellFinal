@@ -21,7 +21,7 @@ public class GameObject
     }
 
     // Moves this GameObject (akin to update() in unity)
-    public void Move(float f)
+    public void Move(Vector3 f, float t)
     {
         // If nothing else, apply position to transformation matrix
         Mesh.Transformation = Matrix4x4.Translation(Position);

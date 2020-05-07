@@ -5,7 +5,8 @@ import java.util.*;
 //     why input isnt working
 
 Mesh mesh;
-GameObject[] go = new GameObject[6];
+Mesh ship;
+GameObject[] go = new GameObject[10];
 
 Renderer rend;
 
@@ -49,6 +50,7 @@ void setup()
 	size(1000, 1000);
 
 	mesh = Mesh.LoadFromFile(sketchPath("sphere.obj"));
+	ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
 	rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
 
 	x = 0;
@@ -56,14 +58,13 @@ void setup()
 
 	score = 0;
 
-	mesh.Transformation = Matrix4x4.Translation(new Vector3(x, y, 5));
+	go[0] = new Ship(ship, new Vector3(0.5f, 0.5f, 0.5f), new Vector3(x, y, 5), objRadius);
 
-	go[0] = new GameObject(mesh, new Vector3(x, y, 5), objRadius);
-	go[1] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
-	go[2] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
-	go[3] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
-	go[4] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
-	go[5] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	// Init asteroids
+	for (int i = 1; i < go.length; i++)
+	{
+		go[i] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+	}
 
 	lightPos.Normalize();
 }
@@ -93,18 +94,16 @@ void draw()
 	}
 
 	long currentTime = millis();
-	long deltaTime = currentTime - pFrameTime;
+	float deltaTime = (currentTime - pFrameTime) / 1000.0f;
 
 	move();
 
-	go[0].Position = new Vector3(x, y, 5);
+	go[0].Move(new Vector3(x, y, 5), deltaTime);
 
-	go[0].Move(0.5f);
-	go[1].Move(0.5f);
-	go[2].Move(0.5f);
-	go[3].Move(0.5f);
-	go[4].Move(0.5f);
-	go[5].Move(0.5f);
+	for (int i = 1; i < go.length; i++)
+	{
+		go[i].Move(new Vector3(0.5f), deltaTime);
+	}
 
 	List<Triangle> triRaster = rend.RenderMeshes(go);
 
@@ -120,10 +119,10 @@ void draw()
 	}
 
 	// Check collisions
-	for (int i = 1; i < go.length; i++)
+	/*for (int i = 1; i < go.length; i++)
 	{
 		if (go[i].IsColliding(go[0])) state = GameState.Dead;
-	}
+	}*/
 
 	// Update score
 	score = (frameCount - startFrame) / scoreRate;

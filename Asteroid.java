@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Asteroid extends GameObject
+public final class Asteroid extends GameObject
 {
 
     private Random rand;
@@ -33,8 +33,8 @@ public class Asteroid extends GameObject
     // Resets this asteroid
     public void Restart()
     {
-        float x = (float)(rand.nextInt(2 * Math.round(xRange)) - xRange);
-        float y = (float)(rand.nextInt(2 * Math.round(yRange)) - yRange);
+        float x = randomRange(-xRange, xRange);
+        float y = randomRange(-yRange, yRange);
 
         Position = new Vector3(x, y, startZ);
 
@@ -45,7 +45,7 @@ public class Asteroid extends GameObject
 
     // Moves this asteroid (akin to update() in unity)
     @Override
-    public void Move(float speed)
+    public void Move(Vector3 speed, float t)
     {
         if (startTickets > 0)
         {
@@ -53,7 +53,7 @@ public class Asteroid extends GameObject
             return;
         }
 
-        Position.Z -= speed;
+        Position.Z -= speed.X;
 
         if (Position.Z < minZ) Restart();
         else updatePosition();
@@ -63,5 +63,11 @@ public class Asteroid extends GameObject
     private void updatePosition()
     {
         Mesh.Transformation = Matrix4x4.Translation(Position);
+    }
+
+    // Returns a random float within range 
+    private float randomRange(float min, float max)
+    {
+        return rand.nextFloat() * (max - min) + min;
     }
 }
