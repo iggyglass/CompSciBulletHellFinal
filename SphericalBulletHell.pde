@@ -58,7 +58,7 @@ void setup()
 
 	score = 0;
 
-	go[0] = new Ship(ship, new Vector3(0.5f, 0.5f, 0.5f), new Vector3(x, y, 5), objRadius);
+	go[0] = new Ship(ship, new Vector3(0.2f, 0.2f, 0.2f), new Vector3(x, y, 5), objRadius);
 
 	// Init asteroids
 	for (int i = 1; i < go.length; i++)

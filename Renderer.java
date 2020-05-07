@@ -56,7 +56,7 @@ public class Renderer
 				if (normal.Dot(triTrans.Points[0].Subtract(CameraPosition)) < 0.0f)
 				{
 					// Lighting
-					float lightDot = normal.Dot(LightPosition);
+					float lightDot = clamp01(normal.Dot(LightPosition) + 0.2f);
 					int col = (int)(lightDot * 255.0f);
 
 					triProj.Luminance = col;
@@ -119,5 +119,11 @@ public class Renderer
 	public void UpdateProjection()
 	{
 		matProj = Matrix4x4.Projection(Width, Height, Fov, ZNear, ZFar);
+	}
+
+	// Clamps the value between 0 and 1
+	private float clamp01(float f)
+	{
+		return f > 1.0f ? 1.0f : f < 0.0f ? 0.0f : f;
 	}
 }
