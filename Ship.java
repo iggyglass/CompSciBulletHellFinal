@@ -6,6 +6,7 @@ public final class Ship extends GameObject
 
     private Vector3 pPos = Vector3.Zero();
 
+    // Creates a new ship with given parameters
     public Ship(Mesh mesh, Vector3 scale, Vector3 position, float radius)
     {
         Scale = scale;
@@ -16,6 +17,7 @@ public final class Ship extends GameObject
         this.Radius = radius;
     }
 
+    // Moves the ship (akin to update() in unity)
     @Override
     public void Move(Vector3 pos, float t)
     {
@@ -35,6 +37,7 @@ public final class Ship extends GameObject
         pPos = pos;
     }
 
+    // Returns rotation matrix given the target rotation and t
     private Matrix4x4 getRotation(Vector3 tRot, float t)
     {
         Vector3 v = Rotation.Lerp(tRot, t);
