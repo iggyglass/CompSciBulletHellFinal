@@ -46,7 +46,7 @@ void setup()
 {
 	size(1000, 1000);
 
-	mesh = Mesh.LoadFromFile(sketchPath("sphere.obj"));
+	mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
 	ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
 	rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
 
@@ -60,7 +60,7 @@ void setup()
 	// Init asteroids
 	for (int i = 1; i < go.length; i++)
 	{
-		go[i] = new Asteroid(xRange, yRange, 100, 200, 1, objRadius, mesh);
+		go[i] = new Asteroid(xRange, yRange, 100, 200, 2, objRadius, mesh);
 	}
 
 	lightPos.Normalize();

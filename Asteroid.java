@@ -3,6 +3,8 @@ import java.util.Random;
 public final class Asteroid extends GameObject
 {
 
+    public Vector3 Rotation;
+
     private Random rand;
     private float xRange;
     private float yRange;
@@ -37,6 +39,7 @@ public final class Asteroid extends GameObject
         float y = randomRange(-yRange, yRange);
 
         Position = new Vector3(x, y, startZ);
+        Rotation = randomRotation();
 
         startTickets = rand.nextInt(maxTickets);
 
@@ -62,12 +65,28 @@ public final class Asteroid extends GameObject
     // Updates the transformation to align with the actual position of asteroid
     private void updatePosition()
     {
-        Mesh.Transformation = Matrix4x4.Translation(Position);
+        Mesh.Transformation = getRotation().MultiplyMatrix(Matrix4x4.Translation(Position));
     }
 
     // Returns a random float within range 
     private float randomRange(float min, float max)
     {
         return rand.nextFloat() * (max - min) + min;
+    }
+
+    // Returns a random rotation
+    private Vector3 randomRotation()
+    {
+        float x = Matrix4x4.Deg2Rad(randomRange(0f, 359f));
+        float y = Matrix4x4.Deg2Rad(randomRange(0f, 359f));
+        float z = Matrix4x4.Deg2Rad(randomRange(0f, 359f));
+
+        return new Vector3(x, y, z);
+    }
+
+    // Returns the rotation matrix for this object
+    public Matrix4x4 getRotation()
+    {
+        return Matrix4x4.RotationX(Rotation.X).MultiplyMatrix(Matrix4x4.RotationY(Rotation.Y)).MultiplyMatrix(Matrix4x4.RotationZ(Rotation.Z));
     }
 }
