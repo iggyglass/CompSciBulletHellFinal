@@ -1,9 +1,3 @@
-import java.util.*;
-
-// Note to self:
-//   - Remember to focus on window before wondering
-//     why input isnt working
-
 Mesh mesh;
 Mesh ship;
 GameObject[] go = new GameObject[10];
