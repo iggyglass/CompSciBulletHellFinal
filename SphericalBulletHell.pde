@@ -31,9 +31,13 @@ boolean downHeld = false;
 boolean rightHeld = false;
 boolean leftHeld = false;
 
+boolean blinkState = false;
+
 int score;
 int startFrame;
 int scoreRate = 10;
+
+PFont font;
 
 enum GameState
 {
@@ -49,6 +53,9 @@ void setup()
 	mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
 	ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
 	rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
+
+	font = createFont("font.ttf", 32);
+	textFont(font);
 
 	x = 0;
 	y = 0;
@@ -70,12 +77,16 @@ void draw()
 {
 	background(0);
 
+	if (frameCount % 32 == 0) blinkState = !blinkState;
+
 	if (state == GameState.Starting)
 	{
 		fill(255, 255, 255);
 		textAlign(CENTER, CENTER);
 		textSize(64);
-		text("Press Space to start", width / 2, height / 2);
+		text("Don't Crash", width / 2, height / 3);
+		textSize(55);
+		if (blinkState) text("Start", width / 2, height / 2);
 
 		return;
 	}
@@ -84,8 +95,9 @@ void draw()
 		fill(255, 255, 255);
 		textAlign(CENTER, CENTER);
 		textSize(64);
-		text("You are dead", width / 2, height / 2);
-		text("Score: " + Integer.toString(score), width / 2, height / 2 + 100);
+		text("Score: " + Integer.toString(score), width / 2, height / 3);
+		textSize(55);
+		if (blinkState) text("Restart", width / 2, height / 2);
 
 		return;
 	}
@@ -116,10 +128,10 @@ void draw()
 	}
 
 	// Check collisions
-	/*for (int i = 1; i < go.length; i++)
+	for (int i = 1; i < go.length; i++)
 	{
 		if (go[i].IsColliding(go[0])) state = GameState.Dead;
-	}*/
+	}
 
 	// Update score
 	score = (frameCount - startFrame) / scoreRate;
@@ -127,8 +139,8 @@ void draw()
 	// Draw Score
 	fill(255, 255, 255);
 	textSize(64);
-	textAlign(LEFT, TOP);
-	text(Integer.toString(score), 0, 0);
+	textAlign(CENTER, TOP);
+	text(Integer.toString(score), width / 2, 0);
 
 	pFrameTime = currentTime;
 }
