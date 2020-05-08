@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Renderer
 {
 
@@ -28,9 +26,9 @@ public class Renderer
 	}
 
 	// Takes in list of Meshes and returns triangles to raster
-	public List<Triangle> RenderMeshes(GameObject[] gameObjects)
+	public TriangleHeap RenderMeshes(GameObject[] gameObjects)
 	{
-		List<Triangle> triRaster = new ArrayList<Triangle>();
+		TriangleHeap triRaster = new TriangleHeap(65535);
 
 		// Loop through Meshes
 		for (int i = 0; i < gameObjects.length; i++)
@@ -88,13 +86,10 @@ public class Renderer
 					triProj.Points[2].X *= 0.5f * (float)Width;
 					triProj.Points[2].Y *= 0.5f * (float)Height;
 
-					triRaster.add(triProj);
+					triRaster.Add(triProj);
 				}
 			}
 		}
-
-		// Sort triangles (Depth buffer hack)
-		Collections.sort(triRaster, new SortTriangleByZ());
 
 		return triRaster;
 	}

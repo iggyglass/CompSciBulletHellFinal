@@ -108,13 +108,13 @@ void draw()
 		go[i].Move(new Vector3(0.5f), deltaTime);
 	}
 
-	List<Triangle> triRaster = rend.RenderMeshes(go);
+	TriangleHeap triRaster = rend.RenderMeshes(go);
 
 	// Render triangles
-	for (int j = 0; j < triRaster.size(); j++)
+	while (triRaster.GetSize() > 0)
 	{
-		Triangle current = triRaster.get(j);
-
+		Triangle current = triRaster.Pop();
+		
 		stroke(current.Luminance, current.Luminance, current.Luminance, 255);
 		fill(current.Luminance, current.Luminance, current.Luminance, 255);
 

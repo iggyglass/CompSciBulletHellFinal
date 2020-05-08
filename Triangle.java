@@ -22,6 +22,8 @@ public class Triangle
         Points[0] = new Vector3(other.Points[0]);
         Points[1] = new Vector3(other.Points[1]);
         Points[2] = new Vector3(other.Points[2]);
+
+        Luminance = other.Luminance;
     }
 
 	// Creates a new triangle with given points
@@ -63,5 +65,17 @@ public class Triangle
         float z = (Points[0].Z + Points[1].Z + Points[2].Z) / 3.0f;
 
         return new Vector3(x, y, z);
+    }
+
+    // Returns whether this triangle is greater than other triangle t
+    public boolean GreaterThan(Triangle t)
+    {
+        return GetCenter().Z > t.GetCenter().Z;
+    }
+
+    // Returns whether this triangle is less than other triangle t
+    public boolean LessThan(Triangle t)
+    {
+        return GetCenter().Z < t.GetCenter().Z;
     }
 }
