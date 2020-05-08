@@ -1,6 +1,6 @@
 Mesh mesh;
 Mesh ship;
-GameObject[] go = new GameObject[10];
+GameObject[] go = new GameObject[20];
 
 Renderer rend;
 

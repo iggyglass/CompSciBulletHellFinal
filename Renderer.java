@@ -54,7 +54,7 @@ public class Renderer
 				if (normal.Dot(triTrans.Points[0].Subtract(CameraPosition)) < 0.0f)
 				{
 					// Lighting
-					float lightDot = clamp01(normal.Dot(LightPosition) + 0.2f);
+					float lightDot = (clamp01(normal.Dot(LightPosition) + 0.2f) / triTrans.Points[0].Distance(CameraPosition)) * 5.0f;
 					int col = (int)(lightDot * 255.0f);
 
 					triProj.Luminance = col;
