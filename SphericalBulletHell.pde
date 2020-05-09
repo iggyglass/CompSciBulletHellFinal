@@ -21,8 +21,8 @@ float y;
 float velocityX = 0.0f;
 float velocityY = 0.0f;
 
-float xRange = 5;
-float yRange = 5;
+float xRange = 4;
+float yRange = 4;
 
 GameState state = GameState.Starting;
 
@@ -49,6 +49,8 @@ enum GameState
 void setup()
 {
 	size(1000, 1000);
+
+	background(0);
 
 	mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
 	ship = Mesh.LoadFromFile(sketchPath("ship.obj"));

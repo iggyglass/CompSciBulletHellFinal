@@ -28,8 +28,8 @@ public final class Ship extends GameObject
         else if (pPos.Y < pos.Y - 0.01f) tRot.X = Matrix4x4.Deg2Rad(-45);
         else tRot.X = 0;
 
-        if (pPos.X > pos.X + 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y >= pos.Y ? -45 : 45);
-        else if (pPos.X < pos.X - 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y >= pos.Y ? 45 : -45);
+        if (pPos.X > pos.X + 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + 0.01f >= pos.Y ? -45 : 45);
+        else if (pPos.X < pos.X - 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + 0.01f >= pos.Y ? 45 : -45);
         else tRot.Z = 0;
 
         Mesh.Transformation = Matrix4x4.Scale(Scale).MultiplyMatrix(getRotation(tRot, t * 10.0f)).MultiplyMatrix(Matrix4x4.Translation(pos));
