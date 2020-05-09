@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 Mesh mesh;
 Mesh ship;
 GameObject[] go = new GameObject[20];
@@ -33,11 +35,17 @@ boolean leftHeld = false;
 
 boolean blinkState = false;
 
+boolean filesLoaded = false;
+
 int score;
 int startFrame;
 int scoreRate = 10;
 
 PFont font;
+
+SoundFile beep;
+SoundFile select;
+SoundFile explosion;
 
 enum GameState
 {
@@ -52,12 +60,21 @@ void setup()
 
 	background(0);
 
-	mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
-	ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
-	rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
+	if (!filesLoaded)
+	{
+		mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
+		ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
+		rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
 
-	font = createFont("font.ttf", 32);
-	textFont(font);
+		font = createFont("font.ttf", 32);
+		textFont(font);
+
+		beep = new SoundFile(this, "beep.wav");
+		select = new SoundFile(this, "select.wav");
+		explosion = new SoundFile(this, "explosion.wav");
+
+		filesLoaded = true;
+	}
 
 	x = 0;
 	y = 0;
@@ -79,7 +96,12 @@ void draw()
 {
 	background(0);
 
-	if (frameCount % 32 == 0) blinkState = !blinkState;
+	if (frameCount % 32 == 0)
+	{
+		blinkState = !blinkState;
+
+		if ((state == GameState.Starting || state == GameState.Dead) && blinkState) beep.play();
+	}
 
 	if (state == GameState.Starting)
 	{
@@ -132,7 +154,11 @@ void draw()
 	// Check collisions
 	for (int i = 1; i < go.length; i++)
 	{
-		if (go[i].IsColliding(go[0])) state = GameState.Dead;
+		if (go[i].IsColliding(go[0]))
+		{
+			explosion.play();
+			state = GameState.Dead;
+		}
 	}
 
 	// Update score
@@ -227,12 +253,14 @@ void handleInput(int k, boolean down)
 			{
 				startFrame = frameCount;
 				state = GameState.InGame;
+				select.play();
 			}
 			else if (state == GameState.Dead)
 			{
 				state = GameState.InGame;
 				startFrame = 0;
 				frameCount = -1;
+				select.play();
 			}
 
 			break;
