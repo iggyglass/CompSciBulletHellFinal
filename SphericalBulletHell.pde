@@ -135,7 +135,7 @@ void draw()
 
 	for (int i = 1; i < go.length; i++)
 	{
-		go[i].Move(new Vector3(0.5f), deltaTime);
+		go[i].Move(new Vector3(1f), deltaTime);
 	}
 
 	TriangleHeap triRaster = rend.RenderMeshes(go);
