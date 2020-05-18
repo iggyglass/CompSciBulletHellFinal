@@ -13,7 +13,7 @@ float zNear = 0.1f;
 float zFar = 1000.0f;
 float fov = 90.0f;
 
-float objRadius = 0.5f;
+float objRadius = 0.7f;
 
 long pFrameTime = 0;
 
@@ -44,13 +44,14 @@ int scoreRate = 10;
 
 float deltaVelocity = 0.05f;
 float friction = 0.025f;
-float maxSpeed = 0.2f;
+float maxSpeed = 0.3f;
 
 PFont font;
 
 SoundFile beep;
 SoundFile select;
 SoundFile explosion;
+SoundFile music;
 
 enum GameState
 {
@@ -77,6 +78,9 @@ void setup()
 		beep = new SoundFile(this, "beep.wav");
 		select = new SoundFile(this, "select.wav");
 		explosion = new SoundFile(this, "explosion.wav");
+		music = new SoundFile(this, "music.wav");
+
+		music.amp(0.5f);
 
 		filesLoaded = true;
 	}
@@ -163,6 +167,7 @@ void draw()
 	{
 		if (go[i].IsColliding(go[0]))
 		{
+			music.stop();
 			explosion.play();
 			state = GameState.Dead;
 		}
@@ -261,6 +266,7 @@ void handleInput(int k, boolean down)
 				startFrame = frameCount;
 				state = GameState.InGame;
 				select.play();
+				music.loop();
 			}
 			else if (state == GameState.Dead)
 			{
@@ -268,6 +274,7 @@ void handleInput(int k, boolean down)
 				startFrame = 0;
 				frameCount = -1;
 				select.play();
+				music.loop();
 			}
 
 			break;
