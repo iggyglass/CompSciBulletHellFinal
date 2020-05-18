@@ -4,6 +4,7 @@ A little tech demo in the form of a game I made during/for my Computer Science c
 I wrote the 3D renderer itself to learn more about computer graphics and linear algebra.
 
 # How to play
+ - If it isn't already installed, install the Processing Sound Library
  - Press space to start / restart
  - Arrow keys to move
 
