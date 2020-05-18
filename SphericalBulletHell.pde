@@ -23,8 +23,11 @@ float y;
 float velocityX = 0.0f;
 float velocityY = 0.0f;
 
-float xRange = 4;
-float yRange = 4;
+float xRange = 3.0f;
+float yRange = 3.0f;
+
+float asteroidXRange = 5.0f;
+float asteroidYRange = 5.0f;
 
 GameState state = GameState.Starting;
 
@@ -95,7 +98,7 @@ void setup()
 	// Init asteroids
 	for (int i = 1; i < go.length; i++)
 	{
-		go[i] = new Asteroid(xRange, yRange, 100, 200, 2, objRadius, mesh);
+		go[i] = new Asteroid(asteroidXRange, asteroidYRange, 100, 200, 2, objRadius, mesh);
 	}
 
 	lightPos.Normalize();
@@ -146,7 +149,7 @@ void draw()
 
 	for (int i = 1; i < go.length; i++)
 	{
-		go[i].Move(new Vector3(1f), deltaTime);
+		go[i].Move(new Vector3(1.5f), deltaTime);
 	}
 
 	TriangleHeap triRaster = rend.RenderMeshes(go);

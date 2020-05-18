@@ -7,7 +7,7 @@ public class Matrix4x4
     public float[][] M;
 
     // A static epsilon value used throughout code
-    public static float Epsilon = 0.01f;
+    public static float Epsilon = 0.0001f;
 
 	// Creates a new Matrix4x4 with values of 0
     public Matrix4x4()
