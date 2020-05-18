@@ -1,5 +1,5 @@
 # What is this
-A little tech demo in the form of a game I made during/for my Computer Science class during Spring of 2020.
+A little tech demo in the form of a game I made during / for my Computer Science class during Spring of 2020.
 
 I wrote the 3D renderer itself to learn more about computer graphics and linear algebra.
 
