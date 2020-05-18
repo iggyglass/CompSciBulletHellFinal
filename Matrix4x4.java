@@ -6,16 +6,13 @@ public class Matrix4x4
     // Row, Col
     public float[][] M;
 
+    // A static epsilon value used throughout code
+    public static float Epsilon = 0.01f;
+
 	// Creates a new Matrix4x4 with values of 0
     public Matrix4x4()
     {
-        M = new float[][]
-        {
-            { 0, 0, 0, 0 },
-            { 0, 0, 0, 0 },
-            { 0, 0, 0, 0 },
-            { 0, 0, 0, 0 }
-        };
+        M = new float[4][4];
     }
 
     // Creates a clone of Matrix4x4 m
@@ -30,7 +27,7 @@ public class Matrix4x4
         }
     }
 
-    // Tests if this Matrix is equal to other matrix
+    // Tests if this matrix is equal to other matrix
     public boolean Equals(Matrix4x4 other)
     {
         for (int i = 0; i < 4; i++)

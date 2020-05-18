@@ -17,7 +17,7 @@ public class Mesh
 		Tris = Arrays.asList(tris);
 	}
 
-	// Clones Mesh m
+	// Clones Mesh m without transformation
 	public Mesh(Mesh m)
 	{
 		for (int i = 0; i < m.Tris.size(); i++)

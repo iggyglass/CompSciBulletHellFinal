@@ -56,7 +56,7 @@ public final class Asteroid extends GameObject
             return;
         }
 
-        Position.Z -= speed.X;
+        Position.Z -= speed.Z;
 
         if (Position.Z < minZ) Restart();
         else updatePosition();

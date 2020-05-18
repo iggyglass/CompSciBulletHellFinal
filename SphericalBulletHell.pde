@@ -33,6 +33,7 @@ boolean downHeld = false;
 boolean rightHeld = false;
 boolean leftHeld = false;
 
+int blinkRate = 32;
 boolean blinkState = false;
 
 boolean filesLoaded = false;
@@ -40,6 +41,10 @@ boolean filesLoaded = false;
 int score;
 int startFrame;
 int scoreRate = 10;
+
+float deltaVelocity = 0.05f;
+float friction = 0.025f;
+float maxSpeed = 0.2f;
 
 PFont font;
 
@@ -64,7 +69,7 @@ void setup()
 	{
 		mesh = Mesh.LoadFromFile(sketchPath("rock.obj"));
 		ship = Mesh.LoadFromFile(sketchPath("ship.obj"));
-		rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos);
+		rend = new Renderer(width, height, zNear, zFar, fov, lightPos, cameraPos, 40.0f, 0.2f, 65535);
 
 		font = createFont("font.ttf", 32);
 		textFont(font);
@@ -81,7 +86,7 @@ void setup()
 
 	score = 0;
 
-	go[0] = new Ship(ship, new Vector3(0.2f, 0.2f, 0.2f), new Vector3(x, y, 5), objRadius);
+	go[0] = new Ship(ship, new Vector3(0.2f, 0.2f, 0.2f), new Vector3(x, y, 5), objRadius, 45.0f, 10.0f);
 
 	// Init asteroids
 	for (int i = 1; i < go.length; i++)
@@ -96,7 +101,7 @@ void draw()
 {
 	background(0);
 
-	if (frameCount % 32 == 0)
+	if (frameCount % blinkRate == 0)
 	{
 		blinkState = !blinkState;
 
@@ -110,6 +115,7 @@ void draw()
 		textSize(64);
 		text("Don't Crash", width / 2, height / 3);
 		textSize(55);
+
 		if (blinkState) text("Start", width / 2, height / 2);
 
 		return;
@@ -121,6 +127,7 @@ void draw()
 		textSize(64);
 		text("Score: " + Integer.toString(score), width / 2, height / 3);
 		textSize(55);
+
 		if (blinkState) text("Restart", width / 2, height / 2);
 
 		return;
@@ -192,11 +199,11 @@ void move()
 	{
 		if (leftHeld && x > -xRange)
 		{
-			velocityX -= 0.05f;
+			velocityX -= deltaVelocity;
 		}
 		else if (rightHeld && x < xRange)
 		{
-			velocityX += 0.05f;
+			velocityX += deltaVelocity;
 		}
 	}
 
@@ -204,21 +211,21 @@ void move()
 	{
 		if (upHeld && y > -yRange)
 		{
-			velocityY -= 0.05f;
+			velocityY -= deltaVelocity;
 		}
 		else if (downHeld && y < yRange)
 		{
-			velocityY += 0.05f;
+			velocityY += deltaVelocity;
 		}
 	}
 
 	// Apply friction
-	velocityX += velocityX < -0.01f ? 0.025f : velocityX > 0.01f ? -0.025f : 0f;
-	velocityY += velocityY < -0.01f ? 0.025f : velocityY > 0.01f ? -0.025f : 0f;
+	velocityX += velocityX < -Matrix4x4.Epsilon ? friction : velocityX > Matrix4x4.Epsilon ? -friction : 0f;
+	velocityY += velocityY < -Matrix4x4.Epsilon ? friction : velocityY > Matrix4x4.Epsilon ? -friction : 0f;
 
 	// Clamp velocity
-	velocityX = clamp(velocityX, 0.2f);
-	velocityY = clamp(velocityY, 0.2f);
+	velocityX = clamp(velocityX, maxSpeed);
+	velocityY = clamp(velocityY, maxSpeed);
 
 	// Apply velocity
 	x += velocityX;

@@ -5,9 +5,11 @@ public final class Ship extends GameObject
     public Vector3 Rotation;
 
     private Vector3 pPos = Vector3.Zero();
+    private float rotAngle;
+    private float rotSpeed;
 
     // Creates a new ship with given parameters
-    public Ship(Mesh mesh, Vector3 scale, Vector3 position, float radius)
+    public Ship(Mesh mesh, Vector3 scale, Vector3 position, float radius, float rotAngle, float rotSpeed)
     {
         Scale = scale;
         Position = position;
@@ -15,6 +17,8 @@ public final class Ship extends GameObject
 
         this.Mesh = mesh;
         this.Radius = radius;
+        this.rotAngle = rotAngle;
+        this.rotSpeed = rotSpeed;
     }
 
     // Moves the ship (akin to update() in unity)
@@ -24,15 +28,15 @@ public final class Ship extends GameObject
         this.Position = pos;
         Vector3 tRot = Vector3.Zero();
 
-        if (pPos.Y > pos.Y + 0.01f) tRot.X = Matrix4x4.Deg2Rad(45);
-        else if (pPos.Y < pos.Y - 0.01f) tRot.X = Matrix4x4.Deg2Rad(-45);
+        if (pPos.Y > pos.Y + Matrix4x4.Epsilon) tRot.X = Matrix4x4.Deg2Rad(rotAngle);
+        else if (pPos.Y < pos.Y - Matrix4x4.Epsilon) tRot.X = Matrix4x4.Deg2Rad(-rotAngle);
         else tRot.X = 0;
 
-        if (pPos.X > pos.X + 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + 0.01f >= pos.Y ? -45 : 45);
-        else if (pPos.X < pos.X - 0.01f) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + 0.01f >= pos.Y ? 45 : -45);
+        if (pPos.X > pos.X + Matrix4x4.Epsilon) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + Matrix4x4.Epsilon >= pos.Y ? -rotAngle : rotAngle);
+        else if (pPos.X < pos.X - Matrix4x4.Epsilon) tRot.Z = Matrix4x4.Deg2Rad(pPos.Y + Matrix4x4.Epsilon >= pos.Y ? rotAngle : -rotAngle);
         else tRot.Z = 0;
 
-        Mesh.Transformation = Matrix4x4.Scale(Scale).MultiplyMatrix(getRotation(tRot, t * 10.0f)).MultiplyMatrix(Matrix4x4.Translation(pos));
+        Mesh.Transformation = Matrix4x4.Scale(Scale).MultiplyMatrix(getRotation(tRot, t * rotSpeed)).MultiplyMatrix(Matrix4x4.Translation(pos));
 
         pPos = pos;
     }
