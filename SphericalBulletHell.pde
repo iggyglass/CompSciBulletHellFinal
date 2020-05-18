@@ -13,7 +13,7 @@ float zNear = 0.1f;
 float zFar = 1000.0f;
 float fov = 90.0f;
 
-float objRadius = 1.1f;
+float objRadius = 0.5f;
 
 long pFrameTime = 0;
 
@@ -158,9 +158,12 @@ void draw()
 		triangle(current.Points[0].X, current.Points[0].Y, current.Points[1].X, current.Points[1].Y, current.Points[2].X, current.Points[2].Y);
 	}
 
+	drawDebug(go[0]);
+
 	// Check collisions
 	for (int i = 1; i < go.length; i++)
 	{
+		drawDebug(go[i]);
 		if (go[i].IsColliding(go[0]))
 		{
 			explosion.play();
