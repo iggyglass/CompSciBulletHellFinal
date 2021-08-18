@@ -9,7 +9,7 @@ In terms of cleanliness, the code in here isn't the greatest (as is frequently t
 
 Surprisingly it ended up being one of the most fun games in the class (as per my teacher and classmates), despite the fact that I didn't have much time to spend working on gameplay -- focusing my efforts largely on the renderer. 
 
-# How to play using [Processing](https://processing.org/)
+# How to play using [Processing](https://processing.org/ "Link to Processing Foundation")
  - If it isn't already installed, install the Processing Sound Library
  - Press space to start / restart
  - Arrow keys to move
